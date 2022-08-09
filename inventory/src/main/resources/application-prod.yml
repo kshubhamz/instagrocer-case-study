@@ -1,0 +1,44 @@
+server:
+  port: ${PORT}
+
+logging:
+  level:
+    org: WARN
+
+spring:
+  data:
+    mongodb:
+      uri: ${DB_URI}
+      database: ${DB_NAME}
+      auto-index-creation: true
+  security:
+    user:
+      name: ${SPRING_SECURITY_USER}
+      password: ${SPRING_SECURITY_PASS}
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASS}
+    template:
+      retry:
+        enabled: true
+        initial-interval: 2s
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 5s
+          max-attempts: 10
+          max-interval: 20s
+          multiplier: 2
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_SERVER_URI}
+
+# custom defined properties below
+
+jwt_secret: ${JWT_SECRET}
+salt_rounds: ${SALT_ROUNDS}

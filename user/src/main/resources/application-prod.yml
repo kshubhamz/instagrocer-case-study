@@ -1,0 +1,28 @@
+server:
+  port: ${PORT}
+
+logging:
+  level:
+    org: WARN
+
+spring:
+  data:
+    mongodb:
+      uri: ${DB_URI}
+      database: ${DB_NAME}
+      auto-index-creation: true
+  security:
+    user:
+      name: ${SPRING_SECURITY_USER}
+      password: ${SPRING_SECURITY_PASS}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_SERVER_URI}
+
+# custom defined properties below
+
+jwt_secret: ${JWT_SECRET}
+salt_rounds: ${SALT_ROUNDS}
+admin_role_secret: ${ADMIN_ROLE_SECRET}

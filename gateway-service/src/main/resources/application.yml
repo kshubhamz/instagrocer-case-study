@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active:
+    - dev
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+server:
+  forward-headers-strategy: framework
+
+springdoc:
+  swagger-ui:
+    default-models-expand-depth: -1
+    display-request-duration: true
+    urls:
+    - name: auth
+      url: /v3/api-docs/auth
+    - name: inventory
+      url: /v3/api-docs/inventory
+    - name: catalogue
+      url: /v3/api-docs/catalogue
+    - name: orders
+      url: /v3/api-docs/orders

@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "jwt_secret",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt_secret'"
+  },
+  {
+    "name": "salt_rounds",
+    "type": "java.lang.String",
+    "description": "A description for 'salt_rounds'"
+  },
+  {
+    "name": "admin_role_secret",
+    "type": "java.lang.String",
+    "description": "A description for 'admin_role_secret'"
+  },
+  {
+    "name": "rabbitmq.queue.dead-letter",
+    "type": "java.lang.String",
+    "description": "A description for 'rabbitmq.queue.dead-letter'"
+  }
+]}

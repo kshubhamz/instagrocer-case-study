@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: order-service
+  profiles:
+    active:
+    - dev
+
+springdoc:
+  swagger-ui:
+    default-models-expand-depth: -1

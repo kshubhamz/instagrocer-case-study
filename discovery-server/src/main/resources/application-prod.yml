@@ -1,0 +1,8 @@
+server:
+  port: ${PORT}
+  
+spring:
+  security:
+    user:
+      name: ${SPRING_SECURITY_USER}
+      password: ${SPRING_SECURITY_PASS}

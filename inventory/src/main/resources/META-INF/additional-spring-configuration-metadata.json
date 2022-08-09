@@ -1,0 +1,37 @@
+{"properties": [
+  {
+    "name": "rabbitmq.routing.key",
+    "type": "java.lang.String",
+    "description": "A description for 'rabbitmq.routing.key'"
+  },
+  {
+    "name": "rabbitmq.name.topic-exchange",
+    "type": "java.lang.String",
+    "description": "A description for 'rabbitmq.name.topic-exchange'"
+  },
+  {
+    "name": "rabbitmq.name.queue",
+    "type": "java.lang.String",
+    "description": "A description for 'rabbitmq.name.queue'"
+  },
+  {
+    "name": "jwt_secret",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt_secret'"
+  },
+  {
+    "name": "salt_rounds",
+    "type": "java.lang.String",
+    "description": "A description for 'salt_rounds'"
+  },
+  {
+    "name": "admin_role_secret",
+    "type": "java.lang.String",
+    "description": "A description for 'admin_role_secret'"
+  },
+  {
+    "name": "rabbitmq.queue.dead-letter",
+    "type": "java.lang.String",
+    "description": "A description for 'rabbitmq.queue.dead-letter'"
+  }
+]}

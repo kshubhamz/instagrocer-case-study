@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active:
+    - dev
+  application:
+    name: inventory-service
+
+springdoc:
+  swagger-ui:
+    default-models-expand-depth: -1

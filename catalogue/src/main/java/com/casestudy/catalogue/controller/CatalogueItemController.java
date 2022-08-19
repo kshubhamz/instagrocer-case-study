@@ -1,8 +1,10 @@
 package com.casestudy.catalogue.controller;
 
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,13 +27,24 @@ public class CatalogueItemController {
 	
 	@GetMapping
 	@Operation(summary = "Get All Catalogue Items")
-	public List<CatalogueItemResponse> fetchAllItems(
+	public Object fetchAllItems(
 			@RequestParam(required = false) Integer size,
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) String title,
 			@RequestParam(required = false) String category
 			) {
-		return service.getAllItems(title, category, page, size);
+		if (size == null && page == null) {
+			return service.getAllItems(title, category);
+		} else {
+			Page<CatalogueItemResponse> allItemsPaged = service.getAllItemsPaged(title, category, page, size);
+			Map<String, Object> pagedRes = new LinkedHashMap<>();
+			pagedRes.put("data", allItemsPaged.getContent());
+			pagedRes.put("currentPage", allItemsPaged.getPageable().getPageNumber() + 1);
+			pagedRes.put("totalPage", allItemsPaged.getTotalPages());
+			pagedRes.put("currentSize", allItemsPaged.getNumberOfElements());
+			pagedRes.put("totalSize", allItemsPaged.getTotalElements());
+			return pagedRes;
+		}
 	}
 	
 	@GetMapping("/item-by-productId")

@@ -27,30 +27,15 @@ public class CatalogueItemServiceImpl implements CatalogueItemService {
 	private RatingRepository ratingRepository;
 	
 	@Override
-	public List<CatalogueItemResponse> getAllItems(String title, String category, Integer page, Integer size) {
+	public List<CatalogueItemResponse> getAllItems(String title, String category) {
 		List<CatalogueItem> catalogueItems = null;
-		if (page == null && size == null) {
-			if (title == null && category != null) {
-				catalogueItems = repository.findByCategoryOrderByTitleAscPriceAsc(category);
-			} else if (title != null && category == null) {
-				catalogueItems = repository.findByTitleOrderByPrice(title);
-			} else {
-				catalogueItems = repository.findAllByOrderByTitle();
-			}
+		
+		if (title == null && category != null) {
+			catalogueItems = repository.findByCategoryOrderByTitleAscPriceAsc(category);
+		} else if (title != null && category == null) {
+			catalogueItems = repository.findByTitleOrderByPrice(title);
 		} else {
-			page = page == null ? 0 : page;
-			size = size == null ? 10 : size;
-			PageRequest pagedReq = PageRequest.of(page, size);
-			
-			Page<CatalogueItem> pagedRes = null;
-			if (title == null && category != null) {
-				pagedRes = repository.findByCategoryOrderByTitleAscPriceAsc(category, pagedReq);
-			} else if (title != null && category == null) {
-				pagedRes = repository.findByTitleOrderByPrice(title, pagedReq);
-			} else {
-				pagedRes = repository.findAllByOrderByTitle(pagedReq);
-			}
-			catalogueItems = pagedRes.getContent();
+			catalogueItems = repository.findAllByOrderByTitle();
 		}
 		
 		return catalogueItems.stream().map(item -> {
@@ -59,6 +44,29 @@ public class CatalogueItemServiceImpl implements CatalogueItemService {
 			itemResponse.setNoOfRatings(item.getRatings().size());
 			return itemResponse;
 		}).collect(Collectors.toList());
+	}
+	
+	@Override
+	public Page<CatalogueItemResponse> getAllItemsPaged(String title, String category, Integer page, Integer size) {
+		page = page == null ? 0 : page;
+		size = size == null ? 10 : size;
+		PageRequest pagedReq = PageRequest.of(page, size);
+		
+		Page<CatalogueItem> pagedRes = null;
+		if (title == null && category != null) {
+			pagedRes = repository.findByCategoryOrderByTitleAscPriceAsc(category, pagedReq);
+		} else if (title != null && category == null) {
+			pagedRes = repository.findByTitleOrderByPrice(title, pagedReq);
+		} else {
+			pagedRes = repository.findAllByOrderByTitle(pagedReq);
+		}
+		
+		return pagedRes.map(item -> {
+			CatalogueItemResponse itemResponse = CatalogueItemResponse.generateCatalogueItem(item);
+			itemResponse.setRating(calculaterating(item));
+			itemResponse.setNoOfRatings(item.getRatings().size());
+			return itemResponse;
+		});
 	}
 
 	@Override

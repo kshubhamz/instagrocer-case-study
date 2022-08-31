@@ -1,7 +1,6 @@
 package com.casestudy.catalogue.controller;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.casestudy.catalogue.dto.CatalogueItemResponse;
+import com.casestudy.catalogue.dto.CatalogueItemResponsePaged;
 import com.casestudy.catalogue.service.CatalogueItemService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,24 +27,22 @@ public class CatalogueItemController {
 	
 	@GetMapping
 	@Operation(summary = "Get All Catalogue Items")
-	public Object fetchAllItems(
+	public List<CatalogueItemResponse> fetchAllItems(
+			@RequestParam(required = false) String title,
+			@RequestParam(required = false) String category) {
+		return service.getAllItems(title, category);
+	}
+	
+	@GetMapping("/paged")
+	@Operation(summary = "Get All Catalogue Items Paged")
+	public CatalogueItemResponsePaged fetchAllItemsPaged(
 			@RequestParam(required = false) Integer size,
 			@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) String title,
 			@RequestParam(required = false) String category
 			) {
-		if (size == null && page == null) {
-			return service.getAllItems(title, category);
-		} else {
-			Page<CatalogueItemResponse> allItemsPaged = service.getAllItemsPaged(title, category, page, size);
-			Map<String, Object> pagedRes = new LinkedHashMap<>();
-			pagedRes.put("data", allItemsPaged.getContent());
-			pagedRes.put("currentPage", allItemsPaged.getPageable().getPageNumber() + 1);
-			pagedRes.put("totalPage", allItemsPaged.getTotalPages());
-			pagedRes.put("currentSize", allItemsPaged.getNumberOfElements());
-			pagedRes.put("totalSize", allItemsPaged.getTotalElements());
-			return pagedRes;
-		}
+		Page<CatalogueItemResponse> allItemsPaged = service.getAllItemsPaged(title, category, page, size);
+		return CatalogueItemResponsePaged.createFromPage(allItemsPaged);
 	}
 	
 	@GetMapping("/item-by-productId")
